@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import UserLogin from './pages/user/UserLogin'
+import Register from './pages/user/Register'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminLayout from './pages/admin/AdminLayout'
 import Dashboard from './pages/admin/Dashboard'
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/user/login" replace />} />
         <Route path="/user/login" element={<UserLogin />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/admin/login" element={<AdminLogin />} />
 
         {/* Admin Routes with shared layout */}
