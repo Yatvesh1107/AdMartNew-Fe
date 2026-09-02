@@ -1,8 +1,15 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false)
   const [remember, setRemember] = useState(false)
+  const navigate = useNavigate()
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    navigate('/admin')
+  }
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -14,13 +21,12 @@ export default function AdminLogin() {
       {/* Right side */}
       <div className="w-[480px] bg-white flex flex-col items-center justify-center p-10">
         {/* Logo */}
-        <div className="w-[70px] h-[50px] mb-[50px] relative">
-          <div className="absolute top-0 left-[14px] w-[42px] h-[18px] bg-green-500 rounded-t-md -skew-x-[20deg]" />
-          <div className="absolute bottom-0 left-0 w-[42px] h-[18px] bg-orange-500 rounded-b-md -skew-x-[20deg]" />
+        <div className="mb-[30px] text-3xl font-extrabold tracking-wide bg-gradient-to-r from-green-500 via-orange-500 to-orange-600 bg-clip-text text-transparent">
+          AdMart
         </div>
 
         {/* Card */}
-        <div className="w-full max-w-[360px] bg-sky-100 rounded-2xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+        <form onSubmit={handleSubmit} className="w-full max-w-[360px] bg-sky-100 rounded-2xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
           <h2 className="text-center text-[22px] font-semibold text-[#111] mb-7">Admin</h2>
 
           <div className="mb-[18px]">
@@ -66,10 +72,13 @@ export default function AdminLogin() {
             <a href="#" className="text-blue-500 no-underline">Forgot password?</a>
           </div>
 
-          <button className="w-full h-[46px] bg-blue-600 text-white rounded-lg text-[15px] font-medium cursor-pointer hover:bg-blue-700">
+          <button
+            type="submit"
+            className="w-full h-[46px] bg-blue-600 text-white rounded-lg text-[15px] font-medium cursor-pointer hover:bg-blue-700"
+          >
             Login
           </button>
-        </div>
+        </form>
       </div>
     </div>
   )
