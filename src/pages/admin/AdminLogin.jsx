@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import loginImg from '../../assets/images/admin/loginimg.jpg'
 
 export default function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false)
@@ -15,7 +16,7 @@ export default function AdminLogin() {
     <div className="flex h-screen overflow-hidden">
       {/* Left side - background image */}
       <div className="flex-1 bg-cover bg-center relative"
-        style={{ backgroundImage: `url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80')` }}
+        style={{ backgroundImage: `url(${loginImg})` }}
       />
 
       {/* Right side */}

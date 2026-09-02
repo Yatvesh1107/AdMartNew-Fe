@@ -1,5 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import UserLogin from './pages/user/UserLogin'
+import UserLayout from './pages/user/UserLayout'
+import UserDashboard from './pages/user/UserDashboard'
+import AddMember from './pages/user/AddMember'
+import UserMembers from './pages/user/UserMembers'
+import UserMonthlyBazaar from './pages/user/UserMonthlyBazaar'
+import UserProfile from './pages/user/UserProfile'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminLayout from './pages/admin/AdminLayout'
 import Dashboard from './pages/admin/Dashboard'
@@ -14,6 +20,17 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/user/login" replace />} />
         <Route path="/user/login" element={<UserLogin />} />
+
+        {/* User Routes with shared layout */}
+        <Route path="/user" element={<UserLayout />}>
+          <Route index element={<Navigate to="/user/dashboard" replace />} />
+          <Route path="dashboard" element={<UserDashboard />} />
+          <Route path="add-member" element={<AddMember />} />
+          <Route path="bazaar" element={<UserMonthlyBazaar />} />
+          <Route path="profile" element={<UserProfile />} />
+          <Route path="members" element={<UserMembers />} />
+        </Route>
+
         <Route path="/admin/login" element={<AdminLogin />} />
 
         {/* Admin Routes with shared layout */}

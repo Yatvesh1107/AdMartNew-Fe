@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import lighthouseImage from "../../assets/images/user/Rectangle 2756.jpg";
 
 const UserIcon = () => (
@@ -57,10 +57,11 @@ const BrandLogo = () => (
 export default function UserLogin() {
   const [fullName, setFullName] = useState("");
   const [mobile, setMobile] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Login submitted", { fullName, mobile });
+    navigate("/user/dashboard");
   };
 
   return (
