@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import UserLogin from './pages/user/UserLogin'
+import Register from './pages/user/Register'
 import UserLayout from './pages/user/UserLayout'
 import UserDashboard from './pages/user/UserDashboard'
 import AddMember from './pages/user/AddMember'
@@ -20,6 +21,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/user/login" replace />} />
         <Route path="/user/login" element={<UserLogin />} />
+        <Route path="/register" element={<Register />} />
 
         {/* User Routes with shared layout */}
         <Route path="/user" element={<UserLayout />}>

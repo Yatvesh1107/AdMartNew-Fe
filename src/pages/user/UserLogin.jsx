@@ -77,9 +77,9 @@ export default function UserLogin() {
       </section>
 
       {/* RIGHT FORM */}
-      <section className="w-[38.6%] h-screen flex items-center justify-center bg-white overflow-hidden max-md:w-full max-md:h-auto max-md:min-h-screen max-md:p-9 max-md:pt-14 max-md:pb-16">
+      <section className="w-[38.6%] h-screen flex items-center justify-center bg-white overflow-y-auto py-6 max-md:w-full max-md:h-auto max-md:min-h-screen max-md:p-8 max-md:pt-12 max-md:pb-14 max-md:items-start">
 
-        <div className="w-[78%] max-w-[390px] flex flex-col items-center max-md:w-full -translate-y-px">
+        <div className="w-[85%] max-w-[430px] flex flex-col items-center max-md:w-full my-auto -translate-y-px">
 
           {/* LOGO */}
           <div className="w-full flex justify-center mb-8 max-md:mb-6">
