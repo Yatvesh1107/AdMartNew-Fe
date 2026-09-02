@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import UserLogin from './pages/user/UserLogin'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminLayout from './pages/admin/AdminLayout'
 import Dashboard from './pages/admin/Dashboard'
@@ -11,7 +12,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<div className="p-8 text-center">Home</div>} />
+        <Route path="/" element={<Navigate to="/user/login" replace />} />
+        <Route path="/user/login" element={<UserLogin />} />
         <Route path="/admin/login" element={<AdminLogin />} />
 
         {/* Admin Routes with shared layout */}
