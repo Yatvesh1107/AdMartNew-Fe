@@ -76,8 +76,8 @@ export default function Members() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
-        <table className="w-full border-collapse">
+      <div className="bg-white rounded-xl overflow-x-auto shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+        <table className="w-full border-collapse min-w-[760px]">
           <thead className="bg-sky-100">
             <tr>
               {['Name', 'Mobile', 'Join Date', 'Month', 'Monthly Bazaar', 'Status', 'Earning', 'Action'].map((h) => (
@@ -109,7 +109,7 @@ export default function Members() {
       {/* Member Profile Modal */}
       {selected && (
         <div className="fixed inset-0 bg-slate-900/40 flex items-center justify-center z-50">
-          <div className="bg-white w-[680px] max-w-[95%] rounded-2xl p-6 shadow-[0_20px_40px_rgba(0,0,0,0.15)] relative">
+          <div className="bg-white w-[680px] max-w-[95%] rounded-2xl p-6 shadow-[0_20px_40px_rgba(0,0,0,0.15)] relative max-h-[90vh] overflow-y-auto">
             {/* Header */}
             <div className="flex justify-between items-center mb-5">
               <h2 className="text-lg font-semibold text-slate-900">Member Profile</h2>
@@ -122,7 +122,7 @@ export default function Members() {
             {/* Basic Details */}
             <div className="mb-5">
               <div className="text-sm font-semibold text-slate-900 mb-3">Basic Details</div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <Field label="Full Name" value={selected.fullName} />
                 <Field label="Mobile" value={selected.mobile} />
                 <Field label="Joining Date" value={selected.joinDate} />
@@ -132,7 +132,7 @@ export default function Members() {
             {/* Address Details */}
             <div className="mb-5">
               <div className="text-sm font-semibold text-slate-900 mb-3">Address Details</div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <Field label="Flat / House No." value={selected.flat} />
                 <Field label="Area / Street" value={selected.area} />
                 <Field label="Colony" value={selected.colony} />
@@ -145,7 +145,7 @@ export default function Members() {
             {/* KYC Details */}
             <div className="mb-5">
               <div className="text-sm font-semibold text-slate-900 mb-3">KYC Details</div>
-              <div className="flex gap-6 items-center">
+              <div className="flex flex-wrap gap-4 sm:gap-6 items-center">
                 <div>
                   <div className="text-xs text-slate-500 mb-1">Aadhaar Number</div>
                   <div className="text-sm font-medium text-slate-900">{selected.aadhaar}</div>
@@ -164,7 +164,7 @@ export default function Members() {
             {/* System Summary */}
             <div>
               <div className="text-sm font-semibold text-slate-900 mb-3">System Summary</div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <SummaryCard label="Monthly Bazaar" value={`${selected.monthlyBazaar} (${selected.month})`} />
                 <SummaryCard label="Current Earnings" value={selected.earning} />
                 <SummaryCard label="Total Referral Members" value="18" />

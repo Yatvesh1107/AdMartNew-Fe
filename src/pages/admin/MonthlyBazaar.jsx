@@ -78,8 +78,8 @@ export default function MonthlyBazaar() {
         </form>
       ) : (
         /* ========== LIST VIEW ========== */
-        <div className="bg-white rounded-xl overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.05)] max-w-[700px]">
-          <table className="w-full border-collapse">
+        <div className="bg-white rounded-xl overflow-x-auto shadow-[0_1px_3px_rgba(0,0,0,0.05)] max-w-[700px]">
+          <table className="w-full border-collapse min-w-[600px]">
             <thead className="bg-sky-100">
               <tr>
                 {['Month', 'Total Bazaar Amount', 'Action'].map((h) => (

@@ -43,8 +43,8 @@ export default function Achievements() {
             <button className="h-9 px-5 bg-blue-500 text-white rounded-md text-[13px] font-medium cursor-pointer hover:bg-blue-600">Apply</button>
           </div>
 
-          <div className="bg-white rounded-xl overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
-            <table className="w-full border-collapse">
+          <div className="bg-white rounded-xl overflow-x-auto shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+            <table className="w-full border-collapse min-w-[600px]">
               <thead className="bg-sky-100">
                 <tr>
                   {['Name', 'Mobile', 'Action', 'Total Members', ''].map((h, i) => (
@@ -92,8 +92,8 @@ export default function Achievements() {
             <button className="h-9 px-5 bg-blue-500 text-white rounded-md text-[13px] font-medium cursor-pointer hover:bg-blue-600">Apply</button>
           </div>
 
-          <div className="bg-white rounded-xl overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
-            <table className="w-full border-collapse">
+          <div className="bg-white rounded-xl overflow-x-auto shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+            <table className="w-full border-collapse min-w-[760px]">
               <thead className="bg-sky-100">
                 <tr>
                   {['Name', 'Mobile', 'Join Date', 'Month', 'Monthly Bazaar', 'Status', 'Earning', 'Action'].map((h) => (
@@ -136,7 +136,7 @@ export default function Achievements() {
             {/* Basic Details */}
             <div className="mb-5">
               <div className="text-sm font-semibold text-slate-900 mb-3">Basic Details</div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <Field label="Full Name" value={selected.fullName} />
                 <Field label="Mobile" value={selected.mobile} />
                 <Field label="Joining Date" value={selected.joinDate || '10 Jan 2026'} />
@@ -147,7 +147,7 @@ export default function Achievements() {
             {/* Address Details */}
             <div className="mb-5">
               <div className="text-sm font-semibold text-slate-900 mb-3">Address Details</div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <Field label="Flat / House No" value={ADDRESS.flat} />
                 <Field label="Area / Street" value={ADDRESS.area} />
                 <Field label="Colony / Locality" value={ADDRESS.colony} />
@@ -183,7 +183,7 @@ export default function Achievements() {
             {/* System Summary */}
             <div>
               <div className="text-sm font-semibold text-slate-900 mb-3">System Summary</div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <SummaryCard label="Monthly Bazaar" value="₹2,500 (January)" />
                 <SummaryCard label="Current Earnings" value="₹1,200" />
                 <SummaryCard label="Total Referred Members" value="10" />

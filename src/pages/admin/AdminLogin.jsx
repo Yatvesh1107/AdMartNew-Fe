@@ -13,14 +13,14 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex w-full h-screen min-h-screen overflow-hidden bg-white max-md:h-auto max-md:min-h-[100svh] max-md:overflow-y-auto">
       {/* Left side - background image */}
-      <div className="flex-1 bg-cover bg-center relative"
+      <div className="flex-1 bg-cover bg-center relative max-md:hidden"
         style={{ backgroundImage: `url(${loginImg})` }}
       />
 
       {/* Right side */}
-      <div className="w-[480px] bg-white flex flex-col items-center justify-center p-10">
+      <div className="w-[480px] bg-white flex flex-col items-center justify-center p-6 sm:p-10 max-md:w-full max-md:p-8 max-md:pt-12 max-md:pb-14">
         {/* Logo */}
         <div className="mb-[30px] text-3xl font-extrabold tracking-wide bg-gradient-to-r from-green-500 via-orange-500 to-orange-600 bg-clip-text text-transparent">
           AdMart

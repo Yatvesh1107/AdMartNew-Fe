@@ -37,10 +37,10 @@ export default function UserProfile() {
         </div>
 
         {/* Fields */}
-        <div className="grid grid-cols-2 gap-x-6 gap-y-[18px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-[18px]">
           <Field label="Full Name" icon="👤" editable={editMode} value={name} onChange={setName} />
           <Field label="Mobile Number" icon="📞" editable={editMode} value={mobile} onChange={setMobile} />
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <Field label="Address" icon="🏠" editable={editMode} value={address} onChange={setAddress} />
           </div>
           <Field label="Aadhaar Number" icon="🆔" value="XXXX-XXXX-1234" lock />
@@ -62,8 +62,8 @@ export default function UserProfile() {
         {/* Password Fields */}
         {showPassword && (
           <div className="mt-2.5">
-            <div className="grid grid-cols-2 gap-x-6 gap-y-[18px] mt-5">
-              <div className="col-span-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-[18px] mt-5">
+              <div className="sm:col-span-2">
                 <PasswordField label="Current Password" placeholder="Enter Current Password" />
               </div>
               <PasswordField label="New Password" placeholder="Enter New Password" />

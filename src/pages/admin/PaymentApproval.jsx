@@ -117,8 +117,8 @@ export default function PaymentApproval() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
-        <table className="w-full border-collapse">
+      <div className="bg-white rounded-xl overflow-x-auto shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+        <table className="w-full border-collapse min-w-[760px]">
           <thead className="bg-sky-100">
             <tr>
               {['Name', 'Type', 'Txn ID', 'Date & Time', 'Amount', 'Status', 'Action'].map((h) => (

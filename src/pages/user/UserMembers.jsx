@@ -38,8 +38,8 @@ export default function UserMembers() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
-        <table className="w-full border-collapse">
+      <div className="bg-white rounded-xl overflow-x-auto shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+        <table className="w-full border-collapse min-w-[680px]">
           <thead className="bg-sky-100">
             <tr>
               {['Name', 'Mobile', 'Join Date', 'Month', 'Monthly Bazaar', 'Status', 'Action'].map((h) => (
@@ -79,7 +79,7 @@ export default function UserMembers() {
             {/* Basic Details */}
             <div className="mb-5">
               <div className="text-sm font-semibold text-slate-900 mb-3">Basic Details</div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <Field label="Full Name" value={PROFILE.fullName} />
                 <Field label="Mobile" value={PROFILE.mobile} />
                 <Field label="Joining Date" value={PROFILE.joinDate} />
@@ -90,7 +90,7 @@ export default function UserMembers() {
             {/* Address Details */}
             <div className="mb-5">
               <div className="text-sm font-semibold text-slate-900 mb-3">Address Details</div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <Field label="Flat / House No" value={PROFILE.address.flat} />
                 <Field label="Area / Street" value={PROFILE.address.area} />
                 <Field label="Colony / Locality" value={PROFILE.address.colony} />
@@ -107,8 +107,7 @@ export default function UserMembers() {
                 <div>
                   <div className="text-xs text-slate-500 mb-1">Aadhaar Number</div>
                   <div className="text-sm font-medium text-slate-900">{PROFILE.kycs.aadhaar}</div>
-                </div>
-                <div>
+                </div>                <div>
                   <div className="text-xs text-slate-500 mb-1">Aadhaar Front</div>
                   <a href="#" className="text-blue-600 text-[13px] font-medium no-underline">View Image</a>
                 </div>
@@ -126,7 +125,7 @@ export default function UserMembers() {
             {/* System Summary */}
             <div>
               <div className="text-sm font-semibold text-slate-900 mb-3">System Summary</div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <SummaryCard label="Monthly Bazaar" value={PROFILE.summary.bazaar} />
                 <SummaryCard label="Current Earnings" value={PROFILE.summary.earnings} />
                 <SummaryCard label="Total Referred Members" value={PROFILE.summary.referrals} />

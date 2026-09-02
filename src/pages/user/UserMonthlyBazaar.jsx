@@ -10,8 +10,8 @@ export default function UserMonthlyBazaar() {
     <>
       <h1 className="text-[22px] font-semibold text-slate-900 mb-7">Monthly Bazaar</h1>
 
-      <div className="bg-white rounded-xl overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.05)] max-w-[500px]">
-        <table className="w-full border-collapse">
+      <div className="bg-white rounded-xl overflow-x-auto shadow-[0_1px_3px_rgba(0,0,0,0.05)] max-w-[500px]">
+        <table className="w-full border-collapse min-w-[450px]">
           <thead className="bg-sky-100">
             <tr>
               {['Month', 'Total Bazaar Amount'].map((h) => (

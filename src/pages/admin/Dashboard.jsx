@@ -22,7 +22,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-4 gap-5 mb-7">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 mb-7">
         <div className="rounded-xl p-5 bg-pink-100">
           <div className="text-[13px] text-slate-500 mb-2">Total Members</div>
           <div className="text-[22px] font-semibold text-slate-900">18</div>
