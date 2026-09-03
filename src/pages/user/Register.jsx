@@ -93,7 +93,50 @@ export default function Register() {
   const handleNext = () => {
     setError("");
 
+    if (step === 1) {
+      if (!formData.fullName.trim()) {
+        setError("Full name is required");
+        return;
+      }
+      if (!formData.mobile.trim()) {
+        setError("Mobile number is required");
+        return;
+      }
+      // basic mobile validation
+      if (!/^[0-9]{10}$/.test(formData.mobile.trim())) {
+        setError("Enter a valid 10-digit mobile number");
+        return;
+      }
+    }
+
+    if (step === 2) {
+      if (!formData.aadhaarNumber.trim()) {
+        setError("Aadhaar number is required");
+        return;
+      }
+      if (!/^[0-9]{12}$/.test(formData.aadhaarNumber.trim())) {
+        setError("Enter a valid 12-digit Aadhaar number");
+        return;
+      }
+      if (!files.aadhaarFront) {
+        setError("Aadhaar front photo is required");
+        return;
+      }
+      if (!files.aadhaarBack) {
+        setError("Aadhaar back photo is required");
+        return;
+      }
+    }
+
     if (step === 3) {
+      if (!formData.password) {
+        setError("Password is required");
+        return;
+      }
+      if (!formData.confirmPassword) {
+        setError("Confirm password is required");
+        return;
+      }
       if (formData.password !== formData.confirmPassword) {
         setError("Passwords do not match");
         return;
@@ -121,6 +164,7 @@ export default function Register() {
       fd.append("fullName", formData.fullName);
       fd.append("mobile", formData.mobile);
       fd.append("password", formData.password);
+      fd.append("confirmPassword", formData.confirmPassword);
       fd.append("house", formData.house);
       fd.append("street", formData.street);
       fd.append("locality", formData.locality);
@@ -271,15 +315,15 @@ export default function Register() {
               {step === 1 && (
                 <div className="w-full space-y-4">
                   {[
-                    { id: "fullName", label: "Full Name", placeholder: "Full Name" },
-                    { id: "mobile", label: "Mobile Number", placeholder: "Mobile Number", type: "tel" },
+                    { id: "fullName", label: "Full Name", placeholder: "Full Name", required: true },
+                    { id: "mobile", label: "Mobile Number", placeholder: "Mobile Number", type: "tel", required: true, maxLength: 10 },
                   ].map((f) => (
                     <div key={f.id} className="w-full">
                       <label
                         htmlFor={f.id}
                         className="block mb-1.5 text-gray-600 font-sans text-sm font-medium"
                       >
-                        {f.label}
+                        {f.label} {f.required && <span className="text-red-500">*</span>}
                       </label>
                       <input
                         id={f.id}
@@ -287,6 +331,8 @@ export default function Register() {
                         placeholder={f.placeholder}
                         value={formData[f.id]}
                         onChange={handleChange}
+                        required={f.required ? true : undefined}
+                        maxLength={f.maxLength}
                         className="w-full h-11 px-3 bg-white border border-gray-300 rounded-md outline-none text-[#333] font-sans text-sm placeholder:text-gray-400 focus:border-[#0787ff] focus:ring-1 focus:ring-[#0787ff]"
                       />
                     </div>
@@ -324,7 +370,7 @@ export default function Register() {
               {step === 2 && (
                 <div className="w-full space-y-4">
                   {[
-                    { id: "aadhaarNumber", label: "Aadhaar Number", placeholder: "Aadhaar Number" },
+                    { id: "aadhaarNumber", label: "Aadhaar Number", placeholder: "Aadhaar Number", required: true, maxLength: 12 },
                     { id: "panNumber", label: "PAN Card Number", placeholder: "PAN Card Number" },
                   ].map((f) => (
                     <div key={f.id} className="w-full">
@@ -332,7 +378,7 @@ export default function Register() {
                         htmlFor={f.id}
                         className="block mb-1.5 text-gray-600 font-sans text-sm font-medium"
                       >
-                        {f.label}
+                        {f.label} {f.required && <span className="text-red-500">*</span>}
                       </label>
                       <input
                         id={f.id}
@@ -340,14 +386,16 @@ export default function Register() {
                         placeholder={f.placeholder}
                         value={formData[f.id]}
                         onChange={handleChange}
+                        required={f.required ? true : undefined}
+                        maxLength={f.maxLength}
                         className="w-full h-11 px-3 bg-white border border-gray-300 rounded-md outline-none text-[#333] font-sans text-sm placeholder:text-gray-400 focus:border-[#0787ff] focus:ring-1 focus:ring-[#0787ff]"
                       />
                     </div>
                   ))}
 
                   {[
-                    { id: "aadhaarFront", label: "Aadhaar Front Photo", ref: aadhaarFrontRef },
-                    { id: "aadhaarBack", label: "Aadhaar Back Photo", ref: aadhaarBackRef },
+                    { id: "aadhaarFront", label: "Aadhaar Front Photo", ref: aadhaarFrontRef, required: true },
+                    { id: "aadhaarBack", label: "Aadhaar Back Photo", ref: aadhaarBackRef, required: true },
                     { id: "panPhoto", label: "PAN Card Photo", ref: panPhotoRef },
                   ].map((f) => (
                     <div key={f.id} className="w-full">
@@ -355,13 +403,14 @@ export default function Register() {
                         htmlFor={f.id}
                         className="block mb-1.5 text-gray-600 font-sans text-sm font-medium"
                       >
-                        {f.label}
+                        {f.label} {f.required && <span className="text-red-500">*</span>}
                       </label>
                       <input
                         ref={f.ref}
                         id={f.id}
                         type="file"
                         accept="image/*"
+                        required={f.required ? true : undefined}
                         onChange={(e) => handleFileChange(e, f.id)}
                         className="w-full h-11 px-3 bg-white border border-gray-300 rounded-md text-[#333] font-sans text-sm file:mr-3 file:border-0 file:bg-[#0787ff] file:text-white file:text-xs file:font-semibold file:py-2 file:px-3 file:rounded file:cursor-pointer"
                       />
@@ -377,8 +426,8 @@ export default function Register() {
               {step === 3 && (
                 <div className="w-full space-y-4">
                   {[
-                    { id: "password", label: "Password", placeholder: "Password", type: "password" },
-                    { id: "confirmPassword", label: "Confirm Password", placeholder: "Confirm Password", type: "password" },
+                    { id: "password", label: "Password", placeholder: "Password", type: "password", required: true },
+                    { id: "confirmPassword", label: "Confirm Password", placeholder: "Confirm Password", type: "password", required: true },
                     { id: "referralCode", label: "Referral Code (optional)", placeholder: "Referral Code", type: "text" },
                   ].map((f) => (
                     <div key={f.id} className="w-full">
@@ -386,7 +435,7 @@ export default function Register() {
                         htmlFor={f.id}
                         className="block mb-1.5 text-gray-600 font-sans text-sm font-medium"
                       >
-                        {f.label}
+                        {f.label} {f.required && <span className="text-red-500">*</span>}
                       </label>
                       <input
                         id={f.id}
@@ -394,6 +443,7 @@ export default function Register() {
                         placeholder={f.placeholder}
                         value={formData[f.id]}
                         onChange={handleChange}
+                        required={f.required ? true : undefined}
                         className="w-full h-11 px-3 bg-white border border-gray-300 rounded-md outline-none text-[#333] font-sans text-sm placeholder:text-gray-400 focus:border-[#0787ff] focus:ring-1 focus:ring-[#0787ff]"
                       />
                     </div>
