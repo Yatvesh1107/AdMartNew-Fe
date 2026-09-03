@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { getUser, removeToken, removeUser } from '../../services/api'
 
 const USER_MENU = [
   { name: 'Dashboard', icon: '📊', route: '/user/dashboard' },
@@ -7,8 +8,6 @@ const USER_MENU = [
   { name: 'Total Members List', icon: '👥', route: '/user/members' },
   { name: 'Add Member', icon: '➕', route: '/user/add-member' },
 ]
-
-const USER_NAME = 'Rajnish'
 
 const PAGE_TITLES = {
   '/user/dashboard': 'Dashboard',
@@ -24,12 +23,23 @@ export default function UserLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const title = PAGE_TITLES[pathname] || 'User'
 
+  const currentUser = getUser()
+  const userName = currentUser?.fullName || 'User'
+  const userInitial = (userName || 'U').charAt(0).toUpperCase()
+
   const goToProfile = () => {
     setSidebarOpen(false)
     navigate('/user/profile')
   }
 
   const handleNav = () => setSidebarOpen(false)
+
+  const handleLogout = () => {
+    removeToken()
+    removeUser()
+    setSidebarOpen(false)
+    navigate('/user/login')
+  }
 
   return (
     <div className="flex h-screen bg-sky-50 overflow-hidden">
@@ -59,8 +69,8 @@ export default function UserLayout() {
           onClick={goToProfile}
           title="Profile"
         >
-          <div className="w-9 h-9 bg-blue-500 rounded-full flex items-center justify-center text-white text-base">👤</div>
-          <div className="text-sm font-medium text-slate-800">{USER_NAME}</div>
+          <div className="w-9 h-9 bg-blue-500 rounded-full flex items-center justify-center text-white text-base font-semibold">{userInitial}</div>
+          <div className="text-sm font-medium text-slate-800">{userName}</div>
         </div>
 
         {/* Menu */}
@@ -81,6 +91,17 @@ export default function UserLayout() {
             </NavLink>
           ))}
         </nav>
+
+        {/* Logout */}
+        <div className="mt-auto pt-4">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-[14px] py-[11px] rounded-lg text-sm cursor-pointer text-red-600 hover:bg-red-50"
+          >
+            <span>🚪</span>
+            <span>Logout</span>
+          </button>
+        </div>
       </aside>
 
       {/* Right side */}
@@ -120,7 +141,7 @@ export default function UserLayout() {
               className="flex items-center gap-2 cursor-pointer hover:opacity-80 md:hidden"
               aria-label="Profile"
             >
-              <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm">👤</div>
+              <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-semibold">{userInitial}</div>
             </button>
           </div>
         </header>

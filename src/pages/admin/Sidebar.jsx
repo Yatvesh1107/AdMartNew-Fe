@@ -1,4 +1,5 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { removeToken, removeUser } from '../../services/api'
 
 const SIDEBAR_MENU = [
   { name: 'Dashboard', icon: '📊', route: '/admin' },
@@ -10,6 +11,15 @@ const SIDEBAR_MENU = [
 ]
 
 export default function Sidebar({ open, onClose }) {
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    removeToken()
+    removeUser()
+    onClose()
+    navigate('/admin/login')
+  }
+
   return (
     <>
       {/* Mobile overlay */}
@@ -56,6 +66,17 @@ export default function Sidebar({ open, onClose }) {
             </NavLink>
           ))}
         </nav>
+
+        {/* Logout */}
+        <div className="mt-auto pt-4">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-[14px] py-[11px] rounded-lg text-sm cursor-pointer text-red-600 hover:bg-red-50"
+          >
+            <span>🚪</span>
+            <span>Logout</span>
+          </button>
+        </div>
       </aside>
     </>
   )

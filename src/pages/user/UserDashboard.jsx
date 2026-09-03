@@ -1,3 +1,5 @@
+import { getUser } from '../../services/api'
+
 const STATS = [
   { title: 'Total Members', value: '18', sub: '', color: 'purple', icon: '👥' },
   { title: 'Total Earnings', value: '₹12,500', sub: '', color: 'blue', icon: '💰' },
@@ -15,22 +17,27 @@ const RECENT_MEMBERS = [
 ]
 
 export default function UserDashboard() {
+  const currentUser = getUser()
+  const userName = currentUser?.fullName || 'User'
+  const referralCode = currentUser?.referralCode || 'REF12345'
+  const initial = (userName || 'U').charAt(0).toUpperCase()
+
   return (
     <>
       <h1 className="text-[22px] font-semibold text-slate-900 mb-6">Dashboard</h1>
 
       {/* Welcome Card */}
       <div className="bg-white rounded-2xl px-5 sm:px-7 py-6 flex flex-col sm:flex-row items-start sm:items-center gap-[22px] mb-6 shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
-        <div className="w-[72px] h-[72px] bg-blue-100 rounded-full flex items-center justify-center text-[34px] text-blue-500 flex-shrink-0">
-          👤
+        <div className="w-[72px] h-[72px] bg-blue-100 rounded-full flex items-center justify-center text-[34px] font-semibold text-blue-500 flex-shrink-0">
+          {initial}
         </div>
         <div>
-          <h2 className="text-lg font-semibold text-slate-900 mb-1.5">👋 Welcome, Rajnish</h2>
+          <h2 className="text-lg font-semibold text-slate-900 mb-1.5">👋 Welcome, {userName}</h2>
           <p className="text-[13.5px] text-slate-500 mb-3.5 leading-snug">
             Share your referral code and earn commission on every member's bazaar purchase.
           </p>
           <div className="inline-flex items-center gap-2 bg-sky-50 border border-sky-200 rounded-lg px-3.5 py-1.5 text-[13px] text-sky-700">
-            🔗 Referral Code: <strong className="font-semibold">REF12345</strong>
+            🔗 Referral Code: <strong className="font-semibold">{referralCode}</strong>
           </div>
         </div>
       </div>
