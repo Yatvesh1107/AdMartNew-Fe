@@ -1,4 +1,11 @@
-const API_URL = "https://admartnew-se.onrender.com/api"
+const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000/api";
+
+export function getUploadUrl(filename) {
+  if (!filename) return "";
+  if (/^https?:\/\//.test(filename)) return filename;
+  const root = API_URL.replace(/\/+$/, "").replace(/\/api$/, "");
+  return `${root}/uploads/${filename}`;
+}
 
 async function request(endpoint, options = {}) {
   const token = localStorage.getItem("token");

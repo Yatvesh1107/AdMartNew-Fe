@@ -4,18 +4,19 @@ import { defineConfig, loadEnv } from 'vite'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const backendUrl = env.VITE_BACKEND_URL || 'http://localhost:5000'
+  const backendUrl = env.VITE_BACKEND_URL || 'http://localhost:5000/api'
+  const root = backendUrl.replace(/\/+$/, '').replace(/\/api$/, '')
 
   return {
     plugins: [react(), tailwindcss()],
     server: {
       proxy: {
         '/api': {
-          target: backendUrl,
+          target: root,
           changeOrigin: true,
         },
         '/uploads': {
-          target: backendUrl,
+          target: root,
           changeOrigin: true,
         },
       },

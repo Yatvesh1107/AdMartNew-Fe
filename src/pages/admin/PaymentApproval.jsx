@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { adminAPI } from '../../services/api'
+import { adminAPI, getUploadUrl } from '../../services/api'
 
 const STATUS_CLASSES = {
   pending: 'bg-amber-100 text-amber-600',
@@ -12,8 +12,6 @@ const STATUS_LABELS = {
   approved: 'Approved',
   rejected: 'Rejected',
 }
-
-const IMG_BASE = '' // /uploads goes through vite proxy
 
 export default function PaymentApproval() {
   const [users, setUsers] = useState([])
@@ -273,24 +271,24 @@ export default function PaymentApproval() {
                     {selectedUser.kyc?.aadhaarFront && (
                       <div>
                         <p className="text-xs text-slate-500 mb-1">Aadhaar Front</p>
-                        <a href={`${IMG_BASE}/uploads/${selectedUser.kyc.aadhaarFront}`} target="_blank" rel="noreferrer">
-                          <img src={`${IMG_BASE}/uploads/${selectedUser.kyc.aadhaarFront}`} alt="Aadhaar Front" className="w-full h-24 object-cover rounded-lg border border-slate-200" />
+                        <a href={getUploadUrl(selectedUser.kyc.aadhaarFront)} target="_blank" rel="noreferrer">
+                          <img src={getUploadUrl(selectedUser.kyc.aadhaarFront)} alt="Aadhaar Front" className="w-full h-24 object-cover rounded-lg border border-slate-200" />
                         </a>
                       </div>
                     )}
                     {selectedUser.kyc?.aadhaarBack && (
                       <div>
                         <p className="text-xs text-slate-500 mb-1">Aadhaar Back</p>
-                        <a href={`${IMG_BASE}/uploads/${selectedUser.kyc.aadhaarBack}`} target="_blank" rel="noreferrer">
-                          <img src={`${IMG_BASE}/uploads/${selectedUser.kyc.aadhaarBack}`} alt="Aadhaar Back" className="w-full h-24 object-cover rounded-lg border border-slate-200" />
+                        <a href={getUploadUrl(selectedUser.kyc.aadhaarBack)} target="_blank" rel="noreferrer">
+                          <img src={getUploadUrl(selectedUser.kyc.aadhaarBack)} alt="Aadhaar Back" className="w-full h-24 object-cover rounded-lg border border-slate-200" />
                         </a>
                       </div>
                     )}
                     {selectedUser.kyc?.panPhoto && (
                       <div>
                         <p className="text-xs text-slate-500 mb-1">PAN Card</p>
-                        <a href={`${IMG_BASE}/uploads/${selectedUser.kyc.panPhoto}`} target="_blank" rel="noreferrer">
-                          <img src={`${IMG_BASE}/uploads/${selectedUser.kyc.panPhoto}`} alt="PAN Card" className="w-full h-24 object-cover rounded-lg border border-slate-200" />
+                        <a href={getUploadUrl(selectedUser.kyc.panPhoto)} target="_blank" rel="noreferrer">
+                          <img src={getUploadUrl(selectedUser.kyc.panPhoto)} alt="PAN Card" className="w-full h-24 object-cover rounded-lg border border-slate-200" />
                         </a>
                       </div>
                     )}
@@ -301,8 +299,8 @@ export default function PaymentApproval() {
                 <div>
                   <h3 className="text-sm font-semibold text-slate-700 mb-2">Payment Receipt</h3>
                   {selectedUser.paymentScreenshot ? (
-                    <a href={`${IMG_BASE}/uploads/${selectedUser.paymentScreenshot}`} target="_blank" rel="noreferrer">
-                      <img src={`${IMG_BASE}/uploads/${selectedUser.paymentScreenshot}`} alt="Payment Receipt" className="w-full max-w-xs h-40 object-cover rounded-lg border border-slate-200" />
+                    <a href={getUploadUrl(selectedUser.paymentScreenshot)} target="_blank" rel="noreferrer">
+                      <img src={getUploadUrl(selectedUser.paymentScreenshot)} alt="Payment Receipt" className="w-full max-w-xs h-40 object-cover rounded-lg border border-slate-200" />
                     </a>
                   ) : (
                     <p className="text-sm text-slate-500">No payment receipt uploaded</p>
