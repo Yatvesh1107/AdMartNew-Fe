@@ -1,15 +1,37 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { adminAPI, setToken, setUser } from '../../services/api'
 import loginImg from '../../assets/images/admin/loginimg.jpg'
 
 export default function AdminLogin() {
+  const [userId, setUserId] = useState('')
+  const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [remember, setRemember] = useState(false)
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    navigate('/admin')
+    setError('')
+
+    if (!userId.trim() || !password.trim()) {
+      setError('Please fill in all fields')
+      return
+    }
+
+    setLoading(true)
+    try {
+      const data = await adminAPI.login(userId.trim(), password)
+      setToken(data.token)
+      setUser(data.admin)
+      navigate('/admin')
+    } catch (err) {
+      setError(err.message || 'Invalid credentials')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -30,6 +52,12 @@ export default function AdminLogin() {
         <form onSubmit={handleSubmit} className="w-full max-w-[360px] bg-sky-100 rounded-2xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
           <h2 className="text-center text-[22px] font-semibold text-[#111] mb-7">Admin</h2>
 
+          {error && (
+            <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-md text-[13px] font-sans text-center">
+              {error}
+            </div>
+          )}
+
           <div className="mb-[18px]">
             <label className="block text-[13px] text-slate-500 mb-[6px]">Login</label>
             <div className="relative">
@@ -37,6 +65,8 @@ export default function AdminLogin() {
               <input
                 type="text"
                 placeholder="User ID"
+                value={userId}
+                onChange={(e) => setUserId(e.target.value)}
                 className="w-full h-11 border border-slate-300 rounded-lg pl-10 pr-10 text-sm focus:outline-none focus:border-blue-500 bg-white"
               />
             </div>
@@ -49,6 +79,8 @@ export default function AdminLogin() {
               <input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Enter password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full h-11 border border-slate-300 rounded-lg pl-10 pr-10 text-sm focus:outline-none focus:border-blue-500 bg-white"
               />
               <span
@@ -75,9 +107,10 @@ export default function AdminLogin() {
 
           <button
             type="submit"
-            className="w-full h-[46px] bg-blue-600 text-white rounded-lg text-[15px] font-medium cursor-pointer hover:bg-blue-700"
+            disabled={loading}
+            className="w-full h-[46px] bg-blue-600 text-white rounded-lg text-[15px] font-medium cursor-pointer hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Login
+            {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
       </div>

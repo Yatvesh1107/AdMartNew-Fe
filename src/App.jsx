@@ -14,6 +14,7 @@ import PaymentApproval from './pages/admin/PaymentApproval'
 import Members from './pages/admin/Members'
 import MonthlyBazaar from './pages/admin/MonthlyBazaar'
 import Achievements from './pages/admin/Achievements'
+import QrManagement from './pages/admin/QrManagement'
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route path="members" element={<Members />} />
           <Route path="bazaar" element={<MonthlyBazaar />} />
           <Route path="achievements" element={<Achievements />} />
+          <Route path="qr" element={<QrManagement />} />
         </Route>
       </Routes>
     </BrowserRouter>

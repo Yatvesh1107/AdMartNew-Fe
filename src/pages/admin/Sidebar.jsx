@@ -6,6 +6,7 @@ const SIDEBAR_MENU = [
   { name: 'Members', icon: '👥', route: '/admin/members' },
   { name: 'Monthly Bazaar', icon: '🏪', route: '/admin/bazaar' },
   { name: 'Achievements', icon: '🏆', route: '/admin/achievements' },
+  { name: 'QR Code', icon: '📱', route: '/admin/qr' },
 ]
 
 export default function Sidebar({ open, onClose }) {

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { authAPI, qrAPI, setToken, setUser } from "../../services/api";
 import image7 from "../../assets/images/user/image 7.jpg";
 import image2 from "../../assets/images/user/image 2.jpg";
 import image8 from "../../assets/images/user/image 8.jpg";
@@ -26,6 +27,59 @@ export default function Register() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [completed, setCompleted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const aadhaarFrontRef = useRef(null);
+  const aadhaarBackRef = useRef(null);
+  const panPhotoRef = useRef(null);
+  const paymentScreenshotRef = useRef(null);
+
+  const [formData, setFormData] = useState({
+    fullName: "",
+    mobile: "",
+    house: "",
+    street: "",
+    locality: "",
+    city: "",
+    state: "",
+    pincode: "",
+    aadhaarNumber: "",
+    panNumber: "",
+    password: "",
+    confirmPassword: "",
+    referralCode: "",
+  });
+
+  const [files, setFiles] = useState({
+    aadhaarFront: null,
+    aadhaarBack: null,
+    panPhoto: null,
+    paymentScreenshot: null,
+  });
+
+  const [qrCode, setQrCode] = useState(null);
+  const [qrLoading, setQrLoading] = useState(false);
+
+  useEffect(() => {
+    if (step === 4 && !qrCode) {
+      setQrLoading(true);
+      qrAPI.getActive()
+        .then((data) => setQrCode(data))
+        .catch(() => setQrCode(null))
+        .finally(() => setQrLoading(false));
+    }
+  }, [step]);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const handleFileChange = (e, key) => {
+    if (e.target.files && e.target.files[0]) {
+      setFiles({ ...files, [key]: e.target.files[0] });
+    }
+  };
 
   const stages = [
     { id: 1, title: "Address Details", image: image7 },
@@ -37,10 +91,59 @@ export default function Register() {
   const current = stages.find((s) => s.id === step);
 
   const handleNext = () => {
+    setError("");
+
+    if (step === 3) {
+      if (formData.password !== formData.confirmPassword) {
+        setError("Passwords do not match");
+        return;
+      }
+      if (formData.password.length < 6) {
+        setError("Password must be at least 6 characters");
+        return;
+      }
+    }
+
     if (step === 4) {
+      handleSubmitRegistration();
+      return;
+    }
+
+    setStep(step + 1);
+  };
+
+  const handleSubmitRegistration = async () => {
+    setLoading(true);
+    setError("");
+
+    try {
+      const fd = new FormData();
+      fd.append("fullName", formData.fullName);
+      fd.append("mobile", formData.mobile);
+      fd.append("password", formData.password);
+      fd.append("house", formData.house);
+      fd.append("street", formData.street);
+      fd.append("locality", formData.locality);
+      fd.append("city", formData.city);
+      fd.append("state", formData.state);
+      fd.append("pincode", formData.pincode);
+      fd.append("aadhaarNumber", formData.aadhaarNumber);
+      fd.append("panNumber", formData.panNumber);
+      if (formData.referralCode) fd.append("referralCode", formData.referralCode);
+
+      if (files.aadhaarFront) fd.append("aadhaarFront", files.aadhaarFront);
+      if (files.aadhaarBack) fd.append("aadhaarBack", files.aadhaarBack);
+      if (files.panPhoto) fd.append("panPhoto", files.panPhoto);
+      if (files.paymentScreenshot) fd.append("paymentScreenshot", files.paymentScreenshot);
+
+      const data = await authAPI.userRegister(fd);
+      setToken(data.token);
+      setUser(data.user);
       setCompleted(true);
-    } else {
-      setStep(step + 1);
+    } catch (err) {
+      setError(err.message || "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -150,6 +253,12 @@ export default function Register() {
               {current.title}
             </h2>
 
+            {error && (
+              <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-md text-sm font-sans text-center">
+                {error}
+              </div>
+            )}
+
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -158,8 +267,31 @@ export default function Register() {
               className="w-full"
             >
 
+              {/* STEP 1: Address + Personal */}
               {step === 1 && (
                 <div className="w-full space-y-4">
+                  {[
+                    { id: "fullName", label: "Full Name", placeholder: "Full Name" },
+                    { id: "mobile", label: "Mobile Number", placeholder: "Mobile Number", type: "tel" },
+                  ].map((f) => (
+                    <div key={f.id} className="w-full">
+                      <label
+                        htmlFor={f.id}
+                        className="block mb-1.5 text-gray-600 font-sans text-sm font-medium"
+                      >
+                        {f.label}
+                      </label>
+                      <input
+                        id={f.id}
+                        type={f.type || "text"}
+                        placeholder={f.placeholder}
+                        value={formData[f.id]}
+                        onChange={handleChange}
+                        className="w-full h-11 px-3 bg-white border border-gray-300 rounded-md outline-none text-[#333] font-sans text-sm placeholder:text-gray-400 focus:border-[#0787ff] focus:ring-1 focus:ring-[#0787ff]"
+                      />
+                    </div>
+                  ))}
+                  <hr className="border-gray-300 my-2" />
                   {[
                     { id: "house", label: "Flat / House No.", placeholder: "House No." },
                     { id: "street", label: "Area / Street.", placeholder: "Area / Street" },
@@ -179,6 +311,8 @@ export default function Register() {
                         id={f.id}
                         type={f.type || "text"}
                         placeholder={f.placeholder}
+                        value={formData[f.id]}
+                        onChange={handleChange}
                         className="w-full h-11 px-3 bg-white border border-gray-300 rounded-md outline-none text-[#333] font-sans text-sm placeholder:text-gray-400 focus:border-[#0787ff] focus:ring-1 focus:ring-[#0787ff]"
                       />
                     </div>
@@ -186,11 +320,12 @@ export default function Register() {
                 </div>
               )}
 
+              {/* STEP 2: ID Details (KYC) */}
               {step === 2 && (
                 <div className="w-full space-y-4">
                   {[
-                    { id: "aadhar", label: "Aadhaar Number", placeholder: "Aadhaar Number" },
-                    { id: "pan", label: "PAN Card Number", placeholder: "PAN Card Number" },
+                    { id: "aadhaarNumber", label: "Aadhaar Number", placeholder: "Aadhaar Number" },
+                    { id: "panNumber", label: "PAN Card Number", placeholder: "PAN Card Number" },
                   ].map((f) => (
                     <div key={f.id} className="w-full">
                       <label
@@ -203,15 +338,17 @@ export default function Register() {
                         id={f.id}
                         type="text"
                         placeholder={f.placeholder}
+                        value={formData[f.id]}
+                        onChange={handleChange}
                         className="w-full h-11 px-3 bg-white border border-gray-300 rounded-md outline-none text-[#333] font-sans text-sm placeholder:text-gray-400 focus:border-[#0787ff] focus:ring-1 focus:ring-[#0787ff]"
                       />
                     </div>
                   ))}
 
                   {[
-                    { id: "aadharFront", label: "Aadhaar Front Photo" },
-                    { id: "aadharBack", label: "Aadhaar Back Photo" },
-                    { id: "panPhoto", label: "PAN Card Photo" },
+                    { id: "aadhaarFront", label: "Aadhaar Front Photo", ref: aadhaarFrontRef },
+                    { id: "aadhaarBack", label: "Aadhaar Back Photo", ref: aadhaarBackRef },
+                    { id: "panPhoto", label: "PAN Card Photo", ref: panPhotoRef },
                   ].map((f) => (
                     <div key={f.id} className="w-full">
                       <label
@@ -221,22 +358,28 @@ export default function Register() {
                         {f.label}
                       </label>
                       <input
+                        ref={f.ref}
                         id={f.id}
                         type="file"
                         accept="image/*"
+                        onChange={(e) => handleFileChange(e, f.id)}
                         className="w-full h-11 px-3 bg-white border border-gray-300 rounded-md text-[#333] font-sans text-sm file:mr-3 file:border-0 file:bg-[#0787ff] file:text-white file:text-xs file:font-semibold file:py-2 file:px-3 file:rounded file:cursor-pointer"
                       />
+                      {files[f.id] && (
+                        <p className="mt-1 text-xs text-green-600 font-sans">{files[f.id].name}</p>
+                      )}
                     </div>
                   ))}
                 </div>
               )}
 
+              {/* STEP 3: Password */}
               {step === 3 && (
                 <div className="w-full space-y-4">
                   {[
                     { id: "password", label: "Password", placeholder: "Password", type: "password" },
                     { id: "confirmPassword", label: "Confirm Password", placeholder: "Confirm Password", type: "password" },
-                    { id: "referral", label: "Referral Code (optional)", placeholder: "Referral Code", type: "text", optional: true },
+                    { id: "referralCode", label: "Referral Code (optional)", placeholder: "Referral Code", type: "text" },
                   ].map((f) => (
                     <div key={f.id} className="w-full">
                       <label
@@ -249,6 +392,8 @@ export default function Register() {
                         id={f.id}
                         type={f.type}
                         placeholder={f.placeholder}
+                        value={formData[f.id]}
+                        onChange={handleChange}
                         className="w-full h-11 px-3 bg-white border border-gray-300 rounded-md outline-none text-[#333] font-sans text-sm placeholder:text-gray-400 focus:border-[#0787ff] focus:ring-1 focus:ring-[#0787ff]"
                       />
                     </div>
@@ -256,15 +401,29 @@ export default function Register() {
                 </div>
               )}
 
+              {/* STEP 4: Payment */}
               {step === 4 && (
                 <div className="w-full space-y-4">
                   <div className="w-full flex flex-col items-center">
                     <label className="block mb-1.5 text-gray-600 font-sans text-sm font-medium w-full">
                       Scan QR Code to Pay
                     </label>
-                    <div className="w-44 h-44 bg-white border border-gray-300 rounded-md flex items-center justify-center text-gray-400 font-sans text-xs">
-                      QR CODE
+                    <div className="w-48 h-48 bg-white border border-gray-300 rounded-md flex items-center justify-center text-gray-400 font-sans text-xs overflow-hidden">
+                      {qrLoading ? (
+                        <span>Loading QR...</span>
+                      ) : qrCode ? (
+                        <img
+                          src={qrCode.image}
+                          alt={qrCode.title}
+                          className="w-full h-full object-contain p-2"
+                        />
+                      ) : (
+                        <span>QR not available</span>
+                      )}
                     </div>
+                    {qrCode && qrCode.upiId && (
+                      <p className="mt-2 text-xs text-gray-500 font-sans text-center">UPI: {qrCode.upiId}</p>
+                    )}
                   </div>
 
                   <div className="w-full">
@@ -275,11 +434,16 @@ export default function Register() {
                       Upload Payment Screenshot
                     </label>
                     <input
+                      ref={paymentScreenshotRef}
                       id="paymentScreenshot"
                       type="file"
                       accept="image/*"
+                      onChange={(e) => handleFileChange(e, "paymentScreenshot")}
                       className="w-full h-11 px-3 bg-white border border-gray-300 rounded-md text-[#333] font-sans text-sm file:mr-3 file:border-0 file:bg-[#0787ff] file:text-white file:text-xs file:font-semibold file:py-2 file:px-3 file:rounded file:cursor-pointer"
                     />
+                    {files.paymentScreenshot && (
+                      <p className="mt-1 text-xs text-green-600 font-sans">{files.paymentScreenshot.name}</p>
+                    )}
                   </div>
                 </div>
               )}
@@ -296,9 +460,10 @@ export default function Register() {
 
                 <button
                   type="submit"
-                  className="min-w-[110px] h-10 px-6 rounded-md bg-[#0787ff] text-white font-sans text-sm font-semibold cursor-pointer transition-colors duration-150 hover:bg-[#0078e6] active:scale-[0.98]"
+                  disabled={loading}
+                  className="min-w-[110px] h-10 px-6 rounded-md bg-[#0787ff] text-white font-sans text-sm font-semibold cursor-pointer transition-colors duration-150 hover:bg-[#0078e6] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {step === 4 ? "Submit" : "Next"}
+                  {loading ? "Submitting..." : step === 4 ? "Submit" : "Next"}
                 </button>
               </div>
 
