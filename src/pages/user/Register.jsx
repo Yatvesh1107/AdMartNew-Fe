@@ -8,19 +8,7 @@ import image5 from "../../assets/images/user/image 5.jpg";
 import image6 from "../../assets/images/user/image 6.jpg";
 
 const BrandLogo = () => (
-  <svg
-    width="78"
-    height="52"
-    viewBox="0 0 78 52"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path d="M40 7H62L70 17H48L40 7Z" fill="#159447" />
-    <path d="M55 17H70L64 10L55 17Z" fill="#159447" />
-    <path d="M16 30H53L61 40H24L16 30Z" fill="#F6A21A" />
-    <path d="M16 30H31L24 22L16 30Z" fill="#F6A21A" />
-    <path d="M30 20H59V27H30V20Z" fill="#159447" />
-  </svg>
+  <div className="text-3xl font-extrabold tracking-wide bg-gradient-to-r from-green-500 via-orange-500 to-orange-600 bg-clip-text text-transparent">AdMart</div>
 );
 
 export default function Register() {

@@ -28,10 +28,7 @@ export default function Sidebar({ open, onClose }) {
       `}>
         {/* Logo */}
         <div className="flex items-center mb-[30px] pl-2">
-          <div className="w-9 h-7 relative">
-            <div className="absolute top-0 left-[7px] w-[22px] h-[10px] bg-green-500 rounded-t-[3px] -skew-x-[20deg]" />
-            <div className="absolute bottom-0 left-0 w-[22px] h-[10px] bg-orange-500 rounded-b-[3px] -skew-x-[20deg]" />
-          </div>
+          <div className="text-2xl font-extrabold tracking-wide bg-gradient-to-r from-green-500 via-orange-500 to-orange-600 bg-clip-text text-transparent">AdMart</div>
         </div>
 
         {/* Admin info */}

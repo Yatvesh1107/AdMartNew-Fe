@@ -18,22 +18,6 @@ const PAGE_TITLES = {
   '/user/profile': 'Profile',
 }
 
-const BrandLogo = () => (
-  <svg
-    width="44"
-    height="30"
-    viewBox="0 0 78 52"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path d="M40 7H62L70 17H48L40 7Z" fill="#159447" />
-    <path d="M55 17H70L64 10L55 17Z" fill="#159447" />
-    <path d="M16 30H53L61 40H24L16 30Z" fill="#F6A21A" />
-    <path d="M16 30H31L24 22L16 30Z" fill="#F6A21A" />
-    <path d="M30 20H59V27H30V20Z" fill="#159447" />
-  </svg>
-)
-
 export default function UserLayout() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
@@ -65,8 +49,8 @@ export default function UserLayout() {
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         {/* Logo */}
-        <div className="flex items-center gap-2 mb-[30px] pl-2">
-          <BrandLogo />
+        <div className="flex items-center mb-[30px] pl-2">
+          <div className="text-2xl font-extrabold tracking-wide bg-gradient-to-r from-green-500 via-orange-500 to-orange-600 bg-clip-text text-transparent">AdMart</div>
         </div>
 
         {/* User info */}
